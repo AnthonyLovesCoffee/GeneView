@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA VISUALISER</title>
+</head>
+<body>
+    <h1>NASA VISUALISER</h1>
+
+    <!-- Search Box -->
+    <form method="POST" action="/">
+        <input type="text" name="search" placeholder="Search for a sample..." value="{{ search_query or '' }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Link/Button to OSD-379 Experiment Details Page -->
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('experiment_detail', name='OSD-379') }}">
+            <button>Go to OSD-379 Experiment</button>
+        </a>
+    </div>
+
+</body>
+</html>
