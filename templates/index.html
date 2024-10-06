@@ -18,19 +18,18 @@
         <button type="submit">Search</button>
     </form>
 
-    <!-- Link/Button to OSD-379 Experiment Details Page -->
-    <div style="margin-top: 20px;">
-        <a href="{{ url_for('experiment_detail', name='OSD-379') }}">
-            <button>Go to OSD-379 Experiment</button>
-        </a>
-    </div>
+<!-- Experiment Buttons Section -->
+<div class="experiment-buttons">
+    <!-- OSD-379 Experiment Button -->
+    <a href="{{ url_for('experiment_detail', name='OSD-379') }}" class="experiment-btn">
+        Go to OSD-379
+    </a>
 
-     <!-- Link/Button to OSD-665 Experiment Details Page -->
-    <div style="margin-top: 20px;">
-        <a href="{{ url_for('experiment_detail', name='OSD-665') }}">
-            <button>Go to OSD-665 Experiment</button>
-        </a>
-    </div>
+    <!-- OSD-665 Experiment Button -->
+    <a href="{{ url_for('experiment_detail', name='OSD-665') }}" class="experiment-btn">
+        Go to OSD-665
+    </a>
+</div>
 
     <div id="chatBot">
         <iframe 

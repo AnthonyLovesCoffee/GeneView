@@ -59,24 +59,60 @@ input[type="text"] {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
     margin-right: 10​⬤}
 
-    button {
-        height: 44px;
-        padding: 0 20px;
-        font-size: 1.2rem;
-        background-color: #2a3b8a;  /* Flat blue color */
-        color: white;
-        border: none;               /* Remove the border for a flat look */
-        border-radius: 25px;        /* Fully rounded edges */
-        cursor: pointer;            /* Pointer on hover */
-        transition: background-color 0.3s, box-shadow 0.3s;  /* Smooth transitions */
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Modern shadow effect */
-    }
-    
-    button:hover {
-        background-color: #1f2c6e;  /* Darker blue on hover */
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);  /* Enhance shadow on hover */
-    }
-    
-    button:focus {
-        outline: none;  /* Remove the default outline on focus */
-    }
+button {
+    height: 44px;
+    padding: 0 20px;
+    font-size: 1.2rem;
+    background-color: #2a3b8a;  /* Flat blue color */
+    color: white;
+    border: none;               /* Remove the border for a flat look */
+    border-radius: 25px;        /* Fully rounded edges */
+    cursor: pointer;            /* Pointer on hover */
+    transition: background-color 0.3s, box-shadow 0.3s;  /* Smooth transitions */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Modern shadow effect */
+}
+
+button:hover {
+    background-color: #1f2c6e;  /* Darker blue on hover */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);  /* Enhance shadow on hover */
+}
+
+button:focus {
+    outline: none;  /* Remove the default outline on focus */
+}
+
+/* Experiment Buttons Section */
+.experiment-buttons {
+    display: flex;
+    justify-content: center;  /* Center the buttons horizontally */
+    gap: 20px;                /* Add space between the buttons */
+    margin-top: 40px;         /* Add space above the buttons */
+}
+
+/* Experiment Button Styling */
+.experiment-btn {
+    display: inline-block;
+    width: 200px;                  /* Set a square size */
+    height: 200px;                 /* Square button */
+    margin: 10px;                  /* Spacing between buttons */
+    background-color: #2a3b8a;     /* NASA blue background */
+    color: white;                  /* White text */
+    text-align: center;            /* Center the text horizontally */
+    line-height: 200px;            /* Center the text vertically */
+    font-size: 1.5rem;             /* Make the text larger */
+    font-family: Arial, sans-serif;  /* Change the font to Arial */
+    text-decoration: none;         /* Remove underline from the link */
+    border-radius: 10px;           /* Rounded corners for the panel */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+    cursor: pointer;
+}
+
+.experiment-btn:hover {
+    background-color: #1f2c6e;  /* Darken the button on hover */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);  /* Enhance shadow on hover */
+}
+
+.experiment-btn:focus {
+    outline: none;  /* Remove default focus outline */
+}
