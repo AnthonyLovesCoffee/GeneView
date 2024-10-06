@@ -41,7 +41,7 @@
         }
 
         /* Experiment buttons styling */
-        .experiment-buttons 5
+        .experiment-buttons{
             display: flex;
             justify-content: center;
             gap: 20px;
@@ -64,7 +64,7 @@
         }
 
         .experiment-btn:hover {
-            background-color: rgba(0, 86, 179, 0.9);
+            background-color: black;
             transform: scale(1.05);
         }
 
@@ -179,6 +179,43 @@
             }
         });
     </script>
+
+
+
+
+
+</div>
+
+<!-- ChatBot Toggle and Iframe -->
+<div id="chatBot">
+    <button id="toggleChatBot">Chat</button> <!-- Toggle button -->
+
+    <div id="iframeContainer" style="display: none;"> <!-- Initially hidden -->
+        <iframe
+            id="inlineFrame"
+            title="Chat Frame"
+            width="300"
+            height="500"
+            src="https://chat.socialintents.com/c/chat-1728206987669">
+        </iframe>
+    </div>
+</div>
+
+<!-- Inline or external JavaScript -->
+<script>
+    const toggleButton = document.getElementById('toggleChatBot');
+    const iframeContainer = document.getElementById('iframeContainer');
+
+    toggleButton.addEventListener('click', function() {
+        if (iframeContainer.style.display === 'none') {
+            iframeContainer.style.display = 'block';  // Show the iframe
+            toggleButton.textContent = 'Close Chat';  // Update button text
+        } else {
+            iframeContainer.style.display = 'none';  // Hide the iframe
+            toggleButton.textContent = 'Chat';       // Reset button text
+        }
+    });
+</script>
 
 </body>
 </html>
