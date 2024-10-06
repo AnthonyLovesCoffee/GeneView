@@ -156,9 +156,14 @@ def landing_page():
 
 @app.route('/experiment/<name>')
 def experiment_detail(name):
+    # Load CSV data related to the experiment (if needed for other purposes)
     csv_file = f'{name}-samples.csv'
-    df = pd.read_csv(csv_file)
+    if os.path.exists(csv_file):
+        df = pd.read_csv(csv_file)
+    else:
+        df = None
 
+    # Load abstract from md file
     abstract_html = load_abstract(name)
 
     # Select template based on experiment name
@@ -169,6 +174,7 @@ def experiment_detail(name):
     else:
         return "Template not available for the given experiment", 404
 
+    # Render the details page with experiment-specific data and abstract
     return render_template(template_name, experiment_name=name, experiment=df, abstract=abstract_html)
 
 
