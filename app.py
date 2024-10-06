@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for
 from dash import Dash, html,dcc
+from gensim.summarization import summarize
 import plotly.express as px
 import plotly.graph_objects as go
 import markdown 
@@ -140,6 +141,134 @@ def load_abstract(experiment_name):
         return markdown.markdown(md_content)  # Convert Markdown to HTML
     return "<p>Abstract not available.</p>"
 
+# ### Similar existing experiments matching ###
+# # Function to extract experiment name from the CSV filename
+# def get_experiment_name(csv_filename):
+#     return os.path.splitext(csv_filename)[0] 
+
+# # Helper function to load the abstract from a markdown file and convert it to HTML
+# def load_abstract(experiment_name):
+#     abstract_file = f'abstracts/{experiment_name}.md'
+#     if os.path.exists(abstract_file):
+#         with open(abstract_file, 'r') as file:
+#             md_content = file.read()
+#         return markdown.markdown(md_content)  # Convert Markdown to HTML
+#     return "<p>Abstract not available.</p>"
+
+# Helper function to summarize abstract text
+def summarize_abstract(experiment_name):
+    abstract_file = f'abstracts/{experiment_name}.md'
+    if os.path.exists(abstract_file):
+        with open(abstract_file, 'r') as file:
+            text = file.read()
+        try:
+            summary = summarize(text, word_count=100)  # Summarize to 100 words
+            return summary
+        except ValueError:
+            return "Summary could not be generated for this abstract."
+    return "Abstract not available."
+
+# # Load all experiments metadata into a DataFrame
+# def load_metadata():
+#     metadata_files = ['OSD-379-samples.csv', 'OSD-665-samples.csv']  # Example files for different experiments
+#     metadata_df = pd.DataFrame()
+
+#     for file in metadata_files:
+#         if os.path.exists(file):
+#             df = pd.read_csv(file)
+#             metadata_df = pd.concat([metadata_df, df], ignore_index=True)
+    
+#     return metadata_df
+
+# metadata_df = load_metadata()
+
+# # Function to find similar experiments based on keywords
+# def find_similar_experiments(experiment_name):
+#     # Get the row corresponding to the given experiment
+#     experiment_row = metadata_df[metadata_df['Experiment Name'] == experiment_name]
+
+#     if experiment_row.empty:
+#         return []
+
+#     # Extract relevant information from the current experiment
+#     current_samples = experiment_row['Sample Type'].values[0]
+#     current_conditions = experiment_row['Experimental Conditions'].values[0]
+
+#     # Find similar experiments based on sample type and conditions
+#     similar_experiments = metadata_df[
+#         (metadata_df['Sample Type'] == current_samples) |
+#         (metadata_df['Experimental Conditions'] == current_conditions)
+#     ]
+
+#     # Exclude the current experiment from the results
+#     similar_experiments = similar_experiments[similar_experiments['Experiment Name'] != experiment_name]
+
+#     return similar_experiments[['Experiment Name', 'Sample Type', 'Experimental Conditions']].to_dict(orient='records')
+
+# @app.route('/experiment/<name>')
+# def experiment_detail(name):
+#     # Load the abstract and summary as done previously
+#     abstract_html = load_abstract(name)
+#     abstract_summary = summarize_abstract(name)
+
+#     # Find similar experiments
+#     similar_experiments = find_similar_experiments(name)
+
+#     # Pass the similar experiments to the template
+#     return render_template('details.html', experiment_name=name, experiment_summary=abstract_summary, abstract=abstract_html, similar_experiments=similar_experiments)
+
+
+# Load all experiments metadata into a DataFrame
+def load_metadata():
+    metadata_files = ['OSD-379-metadata.csv', 'OSD-665-metadata.csv']  # Example files for different experiments
+    metadata_df = pd.DataFrame()
+
+    for file in metadata_files:
+        if os.path.exists(file):
+            df = pd.read_csv(file)
+            metadata_df = pd.concat([metadata_df, df], ignore_index=True)
+    
+    return metadata_df
+
+metadata_df = load_metadata()
+
+# Function to find similar experiments based on keywords
+def find_similar_experiments(experiment_name):
+    # Get the row corresponding to the given experiment
+    experiment_row = metadata_df[metadata_df['Experiment Name'] == experiment_name]
+
+    if experiment_row.empty:
+        return []
+
+    # Extract relevant information from the current experiment
+    current_samples = experiment_row['Sample Type'].values[0]
+    current_conditions = experiment_row['Experimental Conditions'].values[0]
+
+    # Find similar experiments based on sample type and conditions
+    similar_experiments = metadata_df[
+        (metadata_df['Sample Type'] == current_samples) |
+        (metadata_df['Experimental Conditions'] == current_conditions)
+    ]
+
+    # Exclude the current experiment from the results
+    similar_experiments = similar_experiments[similar_experiments['Experiment Name'] != experiment_name]
+
+    return similar_experiments[['Experiment Name', 'Sample Type', 'Experimental Conditions']].to_dict(orient='records')
+
+#2
+# @app.route('/experiment/<name>')
+# def experiment_detail(name):
+#     # Load the abstract and summary as done previously
+#     abstract_html = load_abstract(name)
+#     abstract_summary = summarize_abstract(name)
+
+#     # Find similar experiments
+#     similar_experiments = find_similar_experiments(name)
+
+#     # Pass the similar experiments to the template
+#     return render_template('details.html', experiment_name=name, experiment_summary=abstract_summary, abstract=abstract_html, similar_experiments=similar_experiments)
+
+
 @app.route('/', methods=['GET', 'POST'])
 def landing_page():
     csv_file = 'OSD-379-samples.csv'  
@@ -154,15 +283,41 @@ def landing_page():
 
     return render_template('index.html', experiment_name=experiment_name, search_query=search_query)
 
+#1
+# @app.route('/experiment/<name>')
+# def experiment_detail(name):
+#     csv_file = f'{name}-samples.csv'
+#     df = pd.read_csv(csv_file)
+
+#     abstract_html = load_abstract(name)
+
+#     return render_template('details.html', experiment_name=name, experiment=df, abstract=abstract_html)
+
 @app.route('/experiment/<name>')
 def experiment_detail(name):
-    csv_file = f'{name}-samples.csv'
-    df = pd.read_csv(csv_file)
-
+    # Load the abstract and summary as done previously
     abstract_html = load_abstract(name)
+    abstract_summary = summarize_abstract(name)
 
-    return render_template('details.html', experiment_name=name, experiment=df, abstract=abstract_html)
+    # Load the experiment data from CSV if needed
+    csv_file = f'{name}-samples.csv'
+    if os.path.exists(csv_file):
+        df = pd.read_csv(csv_file)
+    else:
+        df = None
 
+    # Find similar experiments
+    similar_experiments = find_similar_experiments(name)
+
+    # Pass the similar experiments, abstract, and other data to the template
+    return render_template(
+        'details.html', 
+        experiment_name=name, 
+        experiment_summary=abstract_summary, 
+        abstract=abstract_html, 
+        experiment=df, 
+        similar_experiments=similar_experiments
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)

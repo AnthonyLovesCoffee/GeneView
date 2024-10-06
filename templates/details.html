@@ -6,6 +6,39 @@
     <title>{{ experiment_name }} Details</title>
 </head>
 <body>
+    <h1>Experiment Details: {{ experiment_name }}</h1>
+    
+    <!-- Display the abstract summary -->
+    <div id="abstract-summary">
+        <h2>Abstract Summary</h2>
+        <p>{{ experiment_summary }}</p>
+    </div>
+
+    <!-- Display the full abstract -->
+    <div id="abstract">
+        <h2>Full Abstract</h2>
+        {{ abstract | safe }}
+    </div>
+
+    <!-- Display similar experiments -->
+    <div id="similar-experiments">
+        <h2>Similar Experiments</h2>
+        {% if similar_experiments %}
+            <ul>
+                {% for experiment in similar_experiments %}
+                    <li>
+                        <strong>{{ experiment['Experiment Name'] }}</strong><br>
+                        Sample Type: {{ experiment['Sample Type'] }}<br>
+                        Experimental Conditions: {{ experiment['Experimental Conditions'] }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No similar experiments found.</p>
+        {% endif %}
+    </div>
+</body>
+<body>
     <h1>{{ experiment_name }} Experiment Details</h1>
 
     <!-- Abstract Section -->
