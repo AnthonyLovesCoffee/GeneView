@@ -7,7 +7,7 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="globals.css" />
     <link rel="stylesheet" href="styleguide.css" />
-
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1 class="center">NASA VISUALISER</h1>
@@ -32,11 +32,16 @@
         </a>
     </div>
 
-    <div id = "chatBot">
-        <iframe src="https://chat.socialintents.com/c/chat-1728206987669" width="80%" style="height:80%;min-height:550px;" frameborder="0"></iframe>
+    <div id="chatBot">
+        <iframe 
+            id="inlineFrame"
+            title="Chat Frame"
+            width="300"
+            height="500"
+            src="https://chat.socialintents.com/c/chat-1728206987669">
+        </iframe>
     </div>
-
-
+    
 </body>
 </html>
 
