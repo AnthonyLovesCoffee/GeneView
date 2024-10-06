@@ -19,14 +19,6 @@
         <iframe src="/dash/" width="100%" height="600px" frameborder="0"></iframe>
     </div>
 
-    <!-- Experiment Details and Visualizations -->
-    <h2>Experiment Samples</h2>
-    <ul>
-        {% for sample in experiment['Sample Name'] %}
-            <li>{{ sample }}</li>
-        {% endfor %}
-    </ul>
-
     <a href="{{ url_for('landing_page') }}">Back to Landing Page</a>
 </body>
 </html>
