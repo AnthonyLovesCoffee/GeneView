@@ -15,6 +15,9 @@ dash_app = Dash(__name__, server=app, url_base_pathname='/dash/')
 csv_file = 'OSD-379-clean.csv'
 df = pd.read_csv(csv_file)
 
+osd_665_csv = 'OSD-665-samples.csv'
+df_665 = pd.read_csv(osd_665_csv)
+
 # Split data into control group and experimental group
 control_group = df[df['Sample String'].str.startswith(('BSL', 'GC', 'VIV'))]
 experimental_group = df[df['Sample String'].str.startswith('FLT')]
@@ -157,14 +160,21 @@ def landing_page():
 @app.route('/experiment/<name>')
 def experiment_detail(name):
     csv_file = f'{name}-samples.csv'
-    df = pd.read_csv(csv_file)
 
+    if not os.path.exists(csv_file):
+        return "Experiment data not found", 404
+
+    df = pd.read_csv(csv_file)
     abstract_html = load_abstract(name)
+
+
 
     # Select template based on experiment name
     if name == 'OSD-379':
+        flowchart = control_flowchart
         template_name = 'details.html'
     elif name == 'OSD-665':
+        flowchart = create_osd_665_sankey()
         template_name = 'OSD-665_details.html'
     else:
         return "Template not available for the given experiment", 404
@@ -172,5 +182,87 @@ def experiment_detail(name):
     return render_template('details.html', experiment_name=name, experiment=df, abstract=abstract_html)
 
 
+
+# Helper function to create Sankey diagram components from data
+def create_osd_665_sankey_data(df):
+    nodes = set()  # A set to keep unique nodes
+    edges = []
+
+    for _, row in df.iterrows():
+        # Define the stages for OSD-665: Source Name -> Euthanasia Method -> Sample Preservation -> Sample Storage
+        stages = [
+            row['Source Name'],
+            row['Parameter Value: Euthanasia Method'],
+            row['Parameter Value: Sample Preservation Method'],
+            row['Parameter Value: Sample Storage Temperature']
+        ]
+
+        # For each transition between stages, add to edges
+        for i in range(len(stages) - 1):
+            source = stages[i]
+            target = stages[i + 1]
+
+            # Add nodes and edges for the transition
+            nodes.add(source)
+            nodes.add(target)
+            edges.append((source, target, 1))  # The value is 1 for each sample
+
+    # Convert nodes to list and create indices
+    nodes = list(nodes)
+    source_indices = [nodes.index(edge[0]) for edge in edges]
+    target_indices = [nodes.index(edge[1]) for edge in edges]
+    values = [edge[2] for edge in edges]
+
+    return nodes, source_indices, target_indices, values
+
+# Create Sankey data from the OSD-665 dataset
+osd665_nodes, osd665_source, osd665_target, osd665_values = create_osd_665_sankey_data(df_665)
+
+# Generate the Sankey diagram for OSD-665
+def create_osd_665_sankey():
+    # Customize colors (optional)
+    node_colors = ['lightblue', 'lightgreen', 'rosybrown', 'orange', 'yellowgreen', 'lightcoral', 'cyan']
+
+    # Create Sankey figure
+    fig = go.Figure(go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=20,
+            line=dict(color="black", width=0.5),
+            label=osd665_nodes,
+            color=node_colors * (len(osd665_nodes) // len(node_colors) + 1)  # Repeat colors if needed
+        ),
+        link=dict(
+            source=osd665_source,
+            target=osd665_target,
+            value=osd665_values,
+            color='rgba(192, 192, 192, 0.5)'  # Transparent grey for links
+        )
+    ))
+
+    # Update layout settings
+    fig.update_layout(title_text='OSD-665 Experiment Sankey Diagram', font_size=10)
+
+    return fig
+
+
+# Create the Sankey diagram for OSD-665
+osd_665_sankey_fig = create_osd_665_sankey()
+
+# Dash Layout for Flowchart
+dash_app.layout = html.Div([
+    html.Div(style={'display': 'flex', 'justify-content': 'space-between'}, children=[
+        html.Div([
+            html.H3('OSD-665 Sankey Diagram'),
+            dcc.Graph(
+                id='osd-665-flowchart',
+                figure=osd_665_sankey_fig
+            )
+        ], style={'width': '100%', 'padding': '10px'}),
+    ])
+])
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+
