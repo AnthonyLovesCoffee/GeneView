@@ -11,8 +11,9 @@
     <h1>{{ experiment_name }} Experiment Details</h1>
 
     <!-- Abstract Section -->
-    <section style="border: 1px solid #ccc; padding: 10px; margin: 20px 0;">
-        <h2>Abstract</h2>
+    <section>
+        <h2>Transcriptional profiling of livers from mice flown on Rodent Research Reference Mission-1
+        </h2>
         <div>{{ abstract|safe }}</div>
     </section>
 
@@ -21,6 +22,17 @@
         <iframe src="/dash/" width="100%" height="600px" frameborder="0"></iframe>
     </div>
 
+    <!-- Related Papers Section -->
+    <section id="related-papers">
+        <h2>Related Papers</h2>
+        <div class="papers-grid">
+            <!-- Paper links (example) -->
+            <a href="https://example.com/paper1" target="_blank">Study on Microgravity Effects</a>
+            <a href="https://example.com/paper2" target="_blank">Mice in Space: Genomic Changes</a>
+            <a href="https://example.com/paper3" target="_blank">Spaceflight and Aging: A Detailed Study</a>
+            <!-- Add more paper links as needed -->
+        </div>
+    </section>
 
     <a href="{{ url_for('landing_page') }}">Back to Landing Page</a>
 </body>
