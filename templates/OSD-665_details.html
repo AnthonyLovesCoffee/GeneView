@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ experiment_name }} Details</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='experiments.css') }}">
 </head>
 <body>
     <h1>{{ experiment_name }} Experiment Details</h1>
 
     <!-- Abstract Section -->
     <section style="border: 1px solid #ccc; padding: 10px; margin: 20px 0;">
-        <h2>Abstract</h2>
+        <h2>Transcriptional profiling of right extensor digitorum longus muscle from mice flown on the RR-23 mission</h2>
         <div>{{ abstract|safe }}</div>
     </section>
 
@@ -18,6 +20,17 @@
     <div id="dash-visualization">
         <iframe src="/dash/{{ experiment_name }}" width="100%" height="600px" frameborder="0"></iframe>
     </div>
+
+    <!-- Related Papers Section -->
+    <section id="related-papers">
+        <h2>Related Papers</h2>
+        <div class="papers-grid">
+            <!-- Paper links (example) -->
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7853945/" target="_blank">Isolation and Transcriptomic Profiling of Single Myofibers from Mice
+            </a>
+            <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08873-2" target="_blank">Transcriptomic profiles of muscular dystrophy with myositis (mdm) in extensor digitorum longus</a>
+        </div>
+    </section>
 
     <a href="{{ url_for('landing_page') }}">Back to Landing Page</a>
 </body>
