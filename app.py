@@ -15,9 +15,14 @@ dash_app = Dash(__name__, server=app, url_base_pathname='/dash/')
 csv_file = 'OSD-379-clean.csv'
 df = pd.read_csv(csv_file)
 
+OSD_665_csv_file = 'OSD-665-smaples.csv'
+OSD_665_df = pd.read_csv(csv_file)
 # Split data into control group and experimental group
 control_group = df[df['Sample String'].str.startswith(('BSL', 'GC', 'VIV'))]
 experimental_group = df[df['Sample String'].str.startswith('FLT')]
+
+OSD_665_control_group = OSD_665_df[OSD_665_df['Sample String'].str.startswith(('F', 'GC', 'V'))]
+OSD_665_df_experimental_group = OSD_665_df[OSD_665_df['Sample String'].str.startswith('FLT')]
 
 # Helper function to create Sankey diagram components from data
 def create_sankey_data(df, color_palette):
@@ -58,6 +63,9 @@ experimental_color_palette = ['#19D3F3', '#FF6692', '#B6E880', '#FF97FF', '#FECB
 # Create Sankey data for control and experimental groups
 control_nodes, control_source, control_target, control_values, control_colors = create_sankey_data(control_group, control_color_palette)
 experimental_nodes, experimental_source, experimental_target, experimental_values, experimental_colors = create_sankey_data(experimental_group, experimental_color_palette)
+
+OSD_665_control_nodes, OSD_665_control_source, OSD_665_control_target, OSD_665_control_values, OSD_665_control_colors = create_sankey_data(control_group, control_color_palette)
+OSD_665_experimental_nodes, OSD_665_experimental_source, OSD_665_experimental_target, OSD_665_experimental_values, OSD_665_experimental_colors = create_sankey_data(experimental_group, experimental_color_palette)
 
 # Define Sankey Diagram for Control Group with grey links
 control_flowchart = go.Figure(go.Sankey(
