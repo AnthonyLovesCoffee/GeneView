@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for
 from dash import Dash, html,dcc
-from gensim.summarization import summarize
+from transformers import pipeline
 import plotly.express as px
 import plotly.graph_objects as go
 import markdown 
@@ -155,17 +155,22 @@ def load_abstract(experiment_name):
 #         return markdown.markdown(md_content)  # Convert Markdown to HTML
 #     return "<p>Abstract not available.</p>"
 
-# Helper function to summarize abstract text
-def summarize_abstract(experiment_name):
-    abstract_file = f'abstracts/{experiment_name}.md'
+# function to summarize experiment details text
+# initialise model once for speed
+summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+experiment_markdown = 'OSD-379'
+def summarize_text(experiment_markdown):
+    abstract_file = f'abstracts/{experiment_markdown}.md'
     if os.path.exists(abstract_file):
         with open(abstract_file, 'r') as file:
             text = file.read()
-        try:
-            summary = summarize(text, word_count=100)  # Summarize to 100 words
-            return summary
-        except ValueError:
-            return "Summary could not be generated for this abstract."
+
+        # Generate summary (truncate text if too long)
+        if len(text.split()) > 1024:
+            text = ' '.join(text.split()[:1024])  # Reduce to fit model constraints
+
+        summary = summarizer(text, max_length=100, min_length=30, do_sample=False)
+        return summary[0]['summary_text']
     return "Abstract not available."
 
 # # Load all experiments metadata into a DataFrame
@@ -293,30 +298,48 @@ def landing_page():
 
 #     return render_template('details.html', experiment_name=name, experiment=df, abstract=abstract_html)
 
+
+## OLD SUMMARY ROUTING
+# @app.route('/experiment/<name>')
+# def experiment_detail(name):
+#     # Load the abstract and summary as done previously
+#     abstract_html = load_abstract(name)
+#     abstract_summary = summarize_abstract(name)
+
+#     # Load the experiment data from CSV if needed
+#     csv_file = f'{name}-samples.csv'
+#     if os.path.exists(csv_file):
+#         df = pd.read_csv(csv_file)
+#     else:
+#         df = None
+
+#     # Find similar experiments
+#     similar_experiments = find_similar_experiments(name)
+
+#     # Pass the similar experiments, abstract, and other data to the template
+#     return render_template(
+#         'details.html', 
+#         experiment_name=name, 
+#         experiment_summary=abstract_summary, 
+#         abstract=abstract_html, 
+#         experiment=df, 
+#         similar_experiments=similar_experiments
+#     )
+
 @app.route('/experiment/<name>')
 def experiment_detail(name):
-    # Load the abstract and summary as done previously
+    # Load the abstract from Markdown
     abstract_html = load_abstract(name)
-    abstract_summary = summarize_abstract(name)
 
-    # Load the experiment data from CSV if needed
-    csv_file = f'{name}-samples.csv'
-    if os.path.exists(csv_file):
-        df = pd.read_csv(csv_file)
-    else:
-        df = None
+    # Generate the summary using summarize_text function
+    abstract_summary = summarize_text(name)
 
-    # Find similar experiments
-    similar_experiments = find_similar_experiments(name)
-
-    # Pass the similar experiments, abstract, and other data to the template
+    # Pass the abstract, summary, and other data to the template
     return render_template(
-        'details.html', 
-        experiment_name=name, 
-        experiment_summary=abstract_summary, 
-        abstract=abstract_html, 
-        experiment=df, 
-        similar_experiments=similar_experiments
+        'details.html',
+        experiment_name=name,
+        experiment_summary=abstract_summary,
+        abstract=abstract_html
     )
 
 if __name__ == '__main__':
