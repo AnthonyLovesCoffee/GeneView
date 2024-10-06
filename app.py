@@ -99,7 +99,7 @@ experimental_flowchart = go.Figure(go.Sankey(
         source=experimental_source,
         target=experimental_target,
         value=experimental_values,
-        color='rgba(192, 192, 192, 0.4)'#'grey' 
+        color='rgba(192, 192, 192, 0.4)'#'grey'
     )
 ))
 
