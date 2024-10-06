@@ -9,15 +9,15 @@
     <h1>{{ experiment_name }} Experiment Details</h1>
 
     <!-- Abstract Section -->
-<section style="border: 1px solid #ccc; padding: 10px; margin: 20px 0;">
-    <h2>Abstract</h2>
-    <div id="abstract-text">{{ abstract|safe }}</div>
-    <button onclick="readAbstract()">Read Abstract Aloud</button>
-</section>
+    <section style="border: 1px solid #ccc; padding: 10px; margin: 20px 0;">
+        <h2>Abstract</h2>
+        <div id="abstract-text">{{ abstract|safe }}</div>
+        <button onclick="readAbstract()">Read Abstract Aloud</button>
+    </section>
 
-    <!-- Dash Visualization embedded as an iframe -->
+    <!-- Dash Visualization for OSD-379 embedded as an iframe -->
     <div id="dash-visualization">
-        <iframe src="/dash/" width="100%" height="600px" frameborder="0"></iframe>
+        <iframe src="/dash/379/" width="100%" height="600px" frameborder="0"></iframe>
     </div>
 
     <script>

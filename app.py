@@ -8,16 +8,27 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Dash instance for visualising
-dash_app = Dash(__name__, server=app, url_base_pathname='/dash/')
+# # Dash instance for visualising
+# dash_app = Dash(__name__, server=app, url_base_pathname='/dash/')
+# Dash instance for visualising OSD-379
+dash_app_379 = Dash(__name__, server=app, url_base_pathname='/dash/379/')
+
+# Dash instance for visualising OSD-665
+dash_app_665 = Dash(__name__, server=app, url_base_pathname='/dash/665/')
 
 #Load Samples CSV to extract info for flowchart
 csv_file = 'OSD-379-clean.csv'
+csv_file_665 = 'OSD-665-clean.csv'
 df = pd.read_csv(csv_file)
+df_665 = pd.read_csv(csv_file_665)
 
-# Split data into control group and experimental group
+# Split data into control group and experimental group (379)
 control_group = df[df['Sample String'].str.startswith(('BSL', 'GC', 'VIV'))]
 experimental_group = df[df['Sample String'].str.startswith('FLT')]
+
+# Split data into control group and experimental group for OSD-665
+control_group_665 = df_665[df_665['Sample String'].str.contains('HGC|VGC')]
+experimental_group_665 = df_665[df_665['Sample String'].str.contains('FLT')]
 
 # Helper function to create Sankey diagram components from data
 def create_sankey_data(df, color_palette):
@@ -58,6 +69,10 @@ experimental_color_palette = ['#19D3F3', '#FF6692', '#B6E880', '#FF97FF', '#FECB
 # Create Sankey data for control and experimental groups
 control_nodes, control_source, control_target, control_values, control_colors = create_sankey_data(control_group, control_color_palette)
 experimental_nodes, experimental_source, experimental_target, experimental_values, experimental_colors = create_sankey_data(experimental_group, experimental_color_palette)
+
+# Create Sankey data for control and experimental groups of OSD-665
+control_nodes_665, control_source_665, control_target_665, control_values_665, control_colors_665 = create_sankey_data(control_group_665, control_color_palette)
+experimental_nodes_665, experimental_source_665, experimental_target_665, experimental_values_665, experimental_colors_665 = create_sankey_data(experimental_group_665, experimental_color_palette)
 
 # Define Sankey Diagram for Control Group with grey links
 control_flowchart = go.Figure(go.Sankey(
@@ -100,29 +115,115 @@ experimental_flowchart = go.Figure(go.Sankey(
     )
 ))
 
-experimental_flowchart.update_layout(
-    title_text='Experimental Group Flowchart',
+# Define Sankey Diagram for Experimental Group for OSD-665 with grey links
+experimental_flowchart_665 = go.Figure(go.Sankey(
+    node=dict(
+        pad=15,
+        thickness=20,
+        line=dict(color="black", width=0.5),
+        label=experimental_nodes_665,
+        color=experimental_colors_665
+    ),
+    link=dict(
+        source=experimental_source_665,
+        target=experimental_target_665,
+        value=experimental_values_665,
+        color='rgba(192, 192, 192, 0.4)'
+    )
+))
+
+control_flowchart_665 = go.Figure(go.Sankey(
+    node=dict(
+        pad=15,
+        thickness=20,
+        line=dict(color="black", width=0.5),
+        label=experimental_nodes_665,
+        color=experimental_colors_665
+    ),
+    link=dict(
+        source=experimental_source_665,
+        target=experimental_target_665,
+        value=experimental_values_665,
+        color='rgba(192, 192, 192, 0.4)'
+    )
+))
+
+experimental_flowchart_379 = go.Figure(go.Sankey(
+    node=dict(
+        pad=15,
+        thickness=20,
+        line=dict(color="black", width=0.5),
+        label=experimental_nodes_665,
+        color=experimental_colors_665
+    ),
+    link=dict(
+        source=experimental_source_665,
+        target=experimental_target_665,
+        value=experimental_values_665,
+        color='rgba(192, 192, 192, 0.4)'
+    )
+))
+
+
+experimental_flowchart_379.update_layout(
+    title_text='Experimental Group Flowchart (OSD-379)',
+    font_size=10,
+    title_font_size=16,
+    margin=dict(l=20, r=20, t=40, b=20)
+)
+
+experimental_flowchart_665.update_layout(
+    title_text='Experimental Group Flowchart (OSD-665)',
+    font_size=10,
+    title_font_size=16,
+    margin=dict(l=20, r=20, t=40, b=20)
+)
+
+control_flowchart_665.update_layout(
+    title_text='Experimental Group Flowchart (OSD-665)',
     font_size=10,
     title_font_size=16,
     margin=dict(l=20, r=20, t=40, b=20)
 )
 
 # Dash Layout for Flowchart
-dash_app.layout = html.Div([
+# Dash Layout for OSD-379 Flowchart
+dash_app_379.layout = html.Div([
     html.Div(style={'display': 'flex', 'justify-content': 'space-between'}, children=[
         html.Div([
-            html.H3('1'),
+            html.H3('OSD-379 Control Group'),
             dcc.Graph(
-                id='control-flowchart',
+                id='control-flowchart-379',
                 figure=control_flowchart
             )
         ], style={'width': '48%', 'padding': '10px'}),
 
         html.Div([
-            html.H3('2'),
+            html.H3('OSD-379 Experimental Group'),
             dcc.Graph(
-                id='experimental-flowchart',
+                id='experimental-flowchart-379',
                 figure=experimental_flowchart
+            )
+        ], style={'width': '48%', 'padding': '10px'}),
+    ])
+])
+
+# Dash Layout for OSD-665 Flowchart
+dash_app_665.layout = html.Div([
+    html.Div(style={'display': 'flex', 'justify-content': 'space-between'}, children=[
+        html.Div([
+            html.H3('OSD-665 Control Group'),
+            dcc.Graph(
+                id='control-flowchart-665',
+                figure=control_flowchart_665
+            )
+        ], style={'width': '48%', 'padding': '10px'}),
+
+        html.Div([
+            html.H3('OSD-665 Experimental Group'),
+            dcc.Graph(
+                id='experimental-flowchart-665',
+                figure=experimental_flowchart_665
             )
         ], style={'width': '48%', 'padding': '10px'}),
     ])
@@ -156,26 +257,28 @@ def landing_page():
 
 @app.route('/experiment/<name>')
 def experiment_detail(name):
-    # Load CSV data related to the experiment (if needed for other purposes)
-    csv_file = f'{name}-samples.csv'
-    if os.path.exists(csv_file):
-        df = pd.read_csv(csv_file)
-    else:
-        df = None
-
-    # Load abstract from md file
-    abstract_html = load_abstract(name)
-
-    # Select template based on experiment name
     if name == 'OSD-379':
-        template_name = 'OSD-379_details.html'
+        csv_file = f'{name}-samples.csv'
+        df = pd.read_csv(csv_file)
+
+        # Load abstract from md file
+        abstract_html = load_abstract(name)
+
+        # Render OSD-379 details
+        return render_template('OSD-379_details.html', experiment_name=name, experiment=df, abstract=abstract_html)
+    
     elif name == 'OSD-665':
-        template_name = 'OSD-665_details.html'
+        csv_file = 'OSD-665-clean.csv'
+        df = pd.read_csv(csv_file)
+
+        # Load abstract from md file
+        abstract_html = load_abstract(name)
+
+        # Render OSD-665 details
+        return render_template('OSD-665_details.html', experiment_name=name, experiment=df, abstract=abstract_html)
+
     else:
         return "Template not available for the given experiment", 404
-
-    # Render the details page with experiment-specific data and abstract
-    return render_template(template_name, experiment_name=name, experiment=df, abstract=abstract_html)
 
 
 if __name__ == '__main__':
