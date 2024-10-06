@@ -9,16 +9,49 @@
     <h1>{{ experiment_name }} Experiment Details</h1>
 
     <!-- Abstract Section -->
-    <section style="border: 1px solid #ccc; padding: 10px; margin: 20px 0;">
-        <h2>Abstract</h2>
-        <div>{{ abstract|safe }}</div>
-    </section>
+<section style="border: 1px solid #ccc; padding: 10px; margin: 20px 0;">
+    <h2>Abstract</h2>
+    <div id="abstract-text">{{ abstract|safe }}</div>
+    <button onclick="readAbstract()">Read Abstract Aloud</button>
+</section>
 
     <!-- Dash Visualization embedded as an iframe -->
     <div id="dash-visualization">
         <iframe src="/dash/" width="100%" height="600px" frameborder="0"></iframe>
     </div>
 
+    <script>
+        function readAbstract() {
+            // Clear any ongoing or queued speech
+            window.speechSynthesis.cancel();
+    
+            const abstractText = document.getElementById("abstract-text").innerText;
+    
+            // Split the abstract text into sentences
+            const sentences = abstractText.match(/[^\.!\?]+[\.!\?]+/g);
+            
+            if (sentences && sentences.length > 0) {
+                let index = 0;
+    
+                function speakNextSentence() {
+                    if (index < sentences.length) {
+                        const speech = new SpeechSynthesisUtterance(sentences[index]);
+                        speech.onend = function() {
+                            index++;
+                            speakNextSentence();
+                        };
+                        window.speechSynthesis.speak(speech);
+                    }
+                }
+    
+                // Start reading the first sentence
+                speakNextSentence();
+            } else {
+                const speech = new SpeechSynthesisUtterance(abstractText);
+                window.speechSynthesis.speak(speech);
+            }
+        }
+    </script>
 
     <a href="{{ url_for('landing_page') }}">Back to Landing Page</a>
 </body>
