@@ -96,7 +96,7 @@ experimental_flowchart = go.Figure(go.Sankey(
         source=experimental_source,
         target=experimental_target,
         value=experimental_values,
-        color='rgba(192, 192, 192, 0.4)'#'grey' 
+        color='rgba(192, 192, 192, 0.4)'#'grey'
     )
 ))
 
@@ -160,6 +160,14 @@ def experiment_detail(name):
     df = pd.read_csv(csv_file)
 
     abstract_html = load_abstract(name)
+
+    # Select template based on experiment name
+    if name == 'OSD-379':
+        template_name = 'details.html'
+    elif name == 'OSD-665':
+        template_name = 'OSD-665_details.html'
+    else:
+        return "Template not available for the given experiment", 404
 
     return render_template('details.html', experiment_name=name, experiment=df, abstract=abstract_html)
 
