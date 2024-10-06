@@ -10,7 +10,19 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1 class="center">GeneView</h1>
+    <div class="app-bar">
+        <div class="left-side">
+            <img src="/static/nasaLogo.webp" alt="Logo" class="logo">
+            <h1 class="title">Nasa Data Visualiser</h1>
+        </div>
+        <a href="/" class="home-link">Home</a>
+    </div>
+<!--     
+    <div class="nav">
+        <li>
+            <ul class="center_object">Nasa Data Visualiser</ul>
+        </li>
+    </div> -->
 
     <!-- Search Box -->
     <form method="POST" action="/">
@@ -29,6 +41,20 @@
     <a href="{{ url_for('experiment_detail', name='OSD-665') }}" class="experiment-btn">
         Go to OSD-665
     </a>
+
+    <a href="{{ url_for('experiment_detail', name='OSD-678') }}" class="experiment-btn">
+        Go to OSD-678
+    </a>
+    <a href="{{ url_for('experiment_detail', name='OSD-665') }}" class="experiment-btn">
+        Go to OSD-702
+    </a>
+    <a href="{{ url_for('experiment_detail', name='OSD-718') }}" class="experiment-btn">
+        Go to OSD-718
+    </a>
+
+
+   
+
 </div>
 
 <!-- ChatBot Toggle and Iframe -->
