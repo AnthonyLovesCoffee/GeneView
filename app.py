@@ -22,13 +22,14 @@ csv_file_665 = 'OSD-665-clean.csv'
 df = pd.read_csv(csv_file)
 df_665 = pd.read_csv(csv_file_665)
 
-# Split data into control group and experimental group (379)
+OSD_665_csv_file = 'OSD-665-samples.csv'
+OSD_665_df = pd.read_csv(csv_file)
+# Split data into control group and experimental group
 control_group = df[df['Sample String'].str.startswith(('BSL', 'GC', 'VIV'))]
 experimental_group = df[df['Sample String'].str.startswith('FLT')]
 
-# Split data into control group and experimental group for OSD-665
-control_group_665 = df_665[df_665['Sample String'].str.contains('HGC|VGC')]
-experimental_group_665 = df_665[df_665['Sample String'].str.contains('FLT')]
+OSD_665_control_group = OSD_665_df[OSD_665_df['Sample String'].str.startswith(('F', 'GC', 'V'))]
+OSD_665_df_experimental_group = OSD_665_df[OSD_665_df['Sample String'].str.startswith('FLT')]
 
 # Helper function to create Sankey diagram components from data
 def create_sankey_data(df, color_palette):
@@ -70,9 +71,8 @@ experimental_color_palette = ['#19D3F3', '#FF6692', '#B6E880', '#FF97FF', '#FECB
 control_nodes, control_source, control_target, control_values, control_colors = create_sankey_data(control_group, control_color_palette)
 experimental_nodes, experimental_source, experimental_target, experimental_values, experimental_colors = create_sankey_data(experimental_group, experimental_color_palette)
 
-# Create Sankey data for control and experimental groups of OSD-665
-control_nodes_665, control_source_665, control_target_665, control_values_665, control_colors_665 = create_sankey_data(control_group_665, control_color_palette)
-experimental_nodes_665, experimental_source_665, experimental_target_665, experimental_values_665, experimental_colors_665 = create_sankey_data(experimental_group_665, experimental_color_palette)
+OSD_665_control_nodes, OSD_665_control_source, OSD_665_control_target, OSD_665_control_values, OSD_665_control_colors = create_sankey_data(control_group, control_color_palette)
+OSD_665_experimental_nodes, OSD_665_experimental_source, OSD_665_experimental_target, OSD_665_experimental_values, OSD_665_experimental_colors = create_sankey_data(experimental_group, experimental_color_palette)
 
 # Define Sankey Diagram for Control Group with grey links
 control_flowchart = go.Figure(go.Sankey(
@@ -121,13 +121,13 @@ experimental_flowchart_665 = go.Figure(go.Sankey(
         pad=15,
         thickness=20,
         line=dict(color="black", width=0.5),
-        label=experimental_nodes_665,
-        color=experimental_colors_665
+        label=OSD_665_experimental_nodes,
+        color=OSD_665_experimental_colors
     ),
     link=dict(
-        source=experimental_source_665,
-        target=experimental_target_665,
-        value=experimental_values_665,
+        source=OSD_665_experimental_source,
+        target=OSD_665_experimental_target,
+        value=OSD_665_experimental_values,
         color='rgba(192, 192, 192, 0.4)'
     )
 ))
@@ -137,29 +137,28 @@ control_flowchart_665 = go.Figure(go.Sankey(
         pad=15,
         thickness=20,
         line=dict(color="black", width=0.5),
-        label=experimental_nodes_665,
-        color=experimental_colors_665
+        label=OSD_665_experimental_nodes,
+        color=OSD_665_experimental_colors
     ),
     link=dict(
-        source=experimental_source_665,
-        target=experimental_target_665,
-        value=experimental_values_665,
+        source=OSD_665_experimental_source,
+        target=OSD_665_experimental_target,
+        value=OSD_665_experimental_values,
         color='rgba(192, 192, 192, 0.4)'
-    )
-))
+    )))
 
 experimental_flowchart_379 = go.Figure(go.Sankey(
     node=dict(
         pad=15,
         thickness=20,
         line=dict(color="black", width=0.5),
-        label=experimental_nodes_665,
-        color=experimental_colors_665
+        label=OSD_665_experimental_nodes,
+        color=OSD_665_experimental_colors
     ),
     link=dict(
-        source=experimental_source_665,
-        target=experimental_target_665,
-        value=experimental_values_665,
+        source=OSD_665_experimental_source,
+        target=OSD_665_experimental_target,
+        value=OSD_665_experimental_values,
         color='rgba(192, 192, 192, 0.4)'
     )
 ))

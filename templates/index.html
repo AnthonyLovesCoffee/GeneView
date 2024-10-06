@@ -3,93 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeneView</title>
+    <title>GeneView with Video Background</title>
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="globals.css" />
     <link rel="stylesheet" href="styleguide.css" />
     <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* Fullscreen video background */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Makes sure the video covers the entire background */
+            z-index: -1; /* Places the video behind all other content */
+        }
+
+        /* Content over video */
+        .content {
+            position: relative;
+            z-index: 1; /* Places the content above the video */
+            color: black; /* Ensure the text is readable against the video background */
+            text-align: center;
+            padding-top: 0px; /* Adjust for spacing */
+        }
+
+        .app-bar
+        {
+            background-color: white; /* Change background to black */
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 40px;
+        }
+
+        /* Experiment buttons styling */
+        .experiment-buttons{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .experiment-btn {
+            padding: 10px 20px;
+            font-size: 20px;
+            text-align: center;
+            background-color: black; /* Semi-transparent blue */
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            border: 4px solid white;
+
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .experiment-btn:hover {
+            background-color: black;
+            transform: scale(1.05);
+        }
+
+        /* Header styling */
+        .title
+        {
+            font-size: 2em;
+            color: black;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Adds a shadow to make text more visible */
+        }
+
+        /* ChatBot button styling */
+        #toggleChatBot {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 25px;
+            background-color: black; /* Semi-transparent orange */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #toggleChatBot:hover {
+            background-color: rgba(255, 87, 34, 1);
+            margin-top: 20px;
+            border: 2px solid white;
+            border-radius: 8px;
+            background-color: black;
+            padding: 10px;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
-    <div class="app-bar">
-        <div class="left-side">
-            <img src="/static/nasaLogo.webp" alt="Logo" class="logo">
-            <h1 class="title">Nasa Data Visualiser</h1>
+
+    <!-- Video Background -->
+    <video autoplay muted loop class="video-bg">
+        <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
+        Your browser does not support HTML video.
+    </video>
+
+    <!-- Content Over Video -->
+    <div class="content">
+        <div class="app-bar">
+            <div class="left-side">
+                <img src="/static/nasaLogo.webp" alt="Logo" class="logo">
+                <h1 class="title">Nasa Data Visualiser</h1>
+            </div>
+            <a href="/" class="home-link">Home</a>
         </div>
-        <a href="/" class="home-link">Home</a>
+
+        <!-- Search Box -->
+        <form method="POST" action="/">
+            <input type="text" name="search" placeholder="Search for a sample..." value="{{ search_query or '' }}">
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Experiment Buttons Section -->
+        <div class="experiment-buttons">
+            <!-- OSD-379 Experiment Button -->
+            <a href="{{ url_for('experiment_detail', name='OSD-379') }}" class="experiment-btn">
+                Go to OSD-379
+            </a>
+
+            <!-- OSD-665 Experiment Button -->
+            <a href="{{ url_for('experiment_detail', name='OSD-665') }}" class="experiment-btn">
+                Go to OSD-665
+            </a>
+            <a href="{{ url_for('experiment_detail', name='OSD-678') }}" class="experiment-btn">
+                Go to OSD-678
+            </a>
+            <a href="{{ url_for('experiment_detail', name='OSD-702') }}" class="experiment-btn">
+                Go to OSD-702
+            </a>
+            <a href="{{ url_for('experiment_detail', name='OSD-718') }}" class="experiment-btn">
+                Go to OSD-718
+            </a>
+        </div>
+
+        <!-- ChatBot Toggle and Iframe -->
+        <div id="chatBot">
+            <button id="toggleChatBot">Chat</button> <!-- Toggle button -->
+
+            <div id="iframeContainer" style="display: none;"> <!-- Initially hidden -->
+                <iframe
+                    id="inlineFrame"
+                    title="Chat Frame"
+                    width="300"
+                    height="500"
+                    src="https://chat.socialintents.com/c/chat-1728206987669">
+                </iframe>
+            </div>
+        </div>
     </div>
-<!--     
-    <div class="nav">
-        <li>
-            <ul class="center_object">Nasa Data Visualiser</ul>
-        </li>
-    </div> -->
 
-    <!-- Search Box -->
-    <form method="POST" action="/">
-        <input type="text" name="search" placeholder="Search for a sample..." value="{{ search_query or '' }}">
-        <button type="submit">Search</button>
-    </form>
+    <!-- Inline or external JavaScript -->
+    <script>
+        const toggleButton = document.getElementById('toggleChatBot');
+        const iframeContainer = document.getElementById('iframeContainer');
 
-<!-- Experiment Buttons Section -->
-<div class="experiment-buttons">
-    <!-- OSD-379 Experiment Button -->
-    <a href="{{ url_for('experiment_detail', name='OSD-379') }}" class="experiment-btn">
-        Go to OSD-379
-    </a>
+        toggleButton.addEventListener('click', function() {
+            if (iframeContainer.style.display === 'none') {
+                iframeContainer.style.display = 'block';  // Show the iframe
+                toggleButton.textContent = 'Close Chat';  // Update button text
+            } else {
+                iframeContainer.style.display = 'none';  // Hide the iframe
+                toggleButton.textContent = 'Chat';       // Reset button text
+            }
+        });
+    </script>
 
-    <!-- OSD-665 Experiment Button -->
-    <a href="{{ url_for('experiment_detail', name='OSD-665') }}" class="experiment-btn">
-        Go to OSD-665
-    </a>
-
-    <a href="{{ url_for('experiment_detail', name='OSD-678') }}" class="experiment-btn">
-        Go to OSD-678
-    </a>
-    <a href="{{ url_for('experiment_detail', name='OSD-665') }}" class="experiment-btn">
-        Go to OSD-702
-    </a>
-    <a href="{{ url_for('experiment_detail', name='OSD-718') }}" class="experiment-btn">
-        Go to OSD-718
-    </a>
-   
-
-   
-
-</div>
-
-<!-- ChatBot Toggle and Iframe -->
-<div id="chatBot">
-    <button id="toggleChatBot">Chat</button> <!-- Toggle button -->
-
-    <div id="iframeContainer" style="display: none;"> <!-- Initially hidden -->
-        <iframe 
-            id="inlineFrame"
-            title="Chat Frame"
-            width="300"
-            height="500"
-            src="https://chat.socialintents.com/c/chat-1728206987669">
-        </iframe>
-    </div>
-</div>
-
-<!-- Inline or external JavaScript -->
-<script>
-    const toggleButton = document.getElementById('toggleChatBot');
-    const iframeContainer = document.getElementById('iframeContainer');
-
-    toggleButton.addEventListener('click', function() {
-        if (iframeContainer.style.display === 'none') {
-            iframeContainer.style.display = 'block';  // Show the iframe
-            toggleButton.textContent = 'Close Chat';  // Update button text
-        } else {
-            iframeContainer.style.display = 'none';  // Hide the iframe
-            toggleButton.textContent = 'Chat';       // Reset button text
-        }
-    });
-</script>
-    
 </body>
 </html>
-
-
-
