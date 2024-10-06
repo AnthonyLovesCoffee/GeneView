@@ -169,7 +169,7 @@ def experiment_detail(name):
     else:
         return "Template not available for the given experiment", 404
 
-    return render_template('details.html', experiment_name=name, experiment=df, abstract=abstract_html)
+    return render_template(template_name, experiment_name=name, experiment=df, abstract=abstract_html)
 
 
 if __name__ == '__main__':
