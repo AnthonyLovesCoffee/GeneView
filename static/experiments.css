@@ -1,0 +1,119 @@
+/* Style for the page container */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Style for the page title */
+h1 {
+    text-align: center;
+    color: #2a3b8a;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Style for the abstract section */
+section {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 40px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Add subtle shadow */
+    border-radius: 8px;
+}
+
+/* Style for the abstract title */
+section h2 {
+    color: #1f2c6e;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+/* Style for the Dash iframe container */
+#dash-visualization {
+    margin-bottom: 40px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Add shadow around iframe */
+    border-radius: 8px;  /* Add rounded corners */
+    overflow: hidden;  /* Hide overflow */
+}
+
+/* Style for the iframe */
+iframe {
+    border-radius: 8px;
+}
+
+/* Back to landing page link */
+a {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    background-color: #2a3b8a;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+}
+
+a:hover {
+    background-color: #1f2c6e;
+}
+
+/* Responsive behavior for mobile screens */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    section {
+        padding: 15px;
+    }
+
+    iframe {
+        height: 400px;
+    }
+}
+
+/* Related Papers Section */
+#related-papers {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f1f1f1;  /* Light background to separate section */
+    border-radius: 8px;         /* Rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+#related-papers h2 {
+    color: #2a3b8a;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Grid layout for the paper links */
+.papers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  /* Responsive grid */
+    gap: 20px;  /* Space between grid items */
+}
+
+/* Styling for each paper link */
+.papers-grid a {
+    display: block;
+    padding: 15px;
+    background-color: white;
+    color: #2a3b8a;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.papers-grid a:hover {
+    background-color: #2a3b8a;
+    color: white;  /* Change text color to white on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}

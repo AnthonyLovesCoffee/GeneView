@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ experiment_name }} Details</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='experiments.css') }}">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="styleguide.css" />
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>{{ experiment_name }} Experiment Details</h1>
 
     <!-- Abstract Section -->
-    <section style="border: 1px solid #ccc; padding: 10px; margin: 20px 0;">
-        <h2>Abstract</h2>
-        <div id="abstract-text">{{ abstract|safe }}</div>
-        <button onclick="readAbstract()">Read Abstract Aloud</button>
-    </section>
+<section style="border: 1px solid #ccc; padding: 10px; margin: 20px 0;">
+    <h2>Abstract</h2>
+    <div id="abstract-text">{{ abstract|safe }}</div>
+    <button onclick="readAbstract()">Read Abstract Aloud</button>
+</section>
 
     <!-- Dash Visualization for OSD-379 embedded as an iframe -->
     <div id="dash-visualization">
@@ -52,6 +58,16 @@
             }
         }
     </script>
+  
+    <!-- Related Papers Section -->
+    <section id="related-papers">
+        <h2>Related Papers</h2>
+        <div class="papers-grid">
+            <a href="https://www.jci.org/articles/view/115836" target="_blank">Experimental Liver Injury in Mice Inducible by Concanavalin A.</a>
+            <a href="https://academic.oup.com/jnci/article-abstract/77/6/1303/870792" target="_blank">Mouse Model of Human Colorectal Cancer Liver Metastases</a>
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4695120/" target="_blank">Mouse models of liver cancer: Progress and recommendationsy</a>
+        </div>
+    </section>
 
     <a href="{{ url_for('landing_page') }}">Back to Landing Page</a>
 </body>
