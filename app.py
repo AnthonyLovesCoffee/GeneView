@@ -161,6 +161,14 @@ def experiment_detail(name):
 
     abstract_html = load_abstract(name)
 
+    # Select template based on experiment name
+    if name == 'OSD-379':
+        template_name = 'details.html'
+    elif name == 'OSD-665':
+        template_name = 'OSD-665_details.html'
+    else:
+        return "Template not available for the given experiment", 404
+
     return render_template('details.html', experiment_name=name, experiment=df, abstract=abstract_html)
 
 
