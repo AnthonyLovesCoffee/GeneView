@@ -10,9 +10,17 @@ body {
     background-image: url("/static/universeImage.jpg");
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     height: 100vh;
     margin: 0;
+}
+
+h1 {
+    color: #ffffff;
+}
+
+.mainTitle {
+    color: #2a3b8a;
 }
 
 #chatBot {
@@ -126,23 +134,6 @@ button:focus {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
     cursor: pointer;
 }
-.fakeexperiment-btn {
-    display: inline-block;
-    width: 200px;                  /* Set a square size */
-    height: 200px;                 /* Square button */
-    margin: 10px;                  /* Spacing between buttons */
-    background-color: #2a3b8a;     /* NASA blue background */
-    color: white;                  /* White text */
-    text-align: center;            /* Center the text horizontally */
-    line-height: 200px;            /* Center the text vertically */
-    font-size: 1.5rem;             /* Make the text larger */
-    font-family: Arial, sans-serif;  /* Change the font to Arial */
-    text-decoration: none;         /* Remove underline from the link */
-    border-radius: 10px;           /* Rounded corners for the panel */
-    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
-    cursor: pointer;
-}
 
 .experiment-btn:hover {
     background-color: #1f2c6e;  /* Darken the button on hover */
@@ -193,7 +184,8 @@ button:focus {
     width: 100vw;                    /* Full width of the viewport */
     padding: 10px 20px;              /* Add padding for spacing */
     background-color: #ffffff;          /* Background color for the app bar */
-    color: #000000;                    /* Text color */
+    color: #000000;
+    flex-wrap: wrap;                     /* Text color */
 }
 
 .left-side {
@@ -210,6 +202,7 @@ button:focus {
     font-size: 20px;                 /* Title font size */
     font-family:Arial, Helvetica, sans-serif;
     font-weight: 400;
+    color: #1f2c6e;
 }
 
 .home-link {
