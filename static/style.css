@@ -51,7 +51,7 @@ form {
 
 input[type="text"] {
     width: 400px;                /* Make the search box wider */
-    height: 40px;                /* Make the search box taller */
+    height: 20px;                /* Make the search box taller */
     padding: 10px;               /* Add some padding inside the box */
     font-size: 1.2rem;           /* Increase the font size for the input */
     border: 2px solid #ccc;      /* Border around the search box */
@@ -107,6 +107,23 @@ button:focus {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
     cursor: pointer;
 }
+.fakeexperiment-btn {
+    display: inline-block;
+    width: 200px;                  /* Set a square size */
+    height: 200px;                 /* Square button */
+    margin: 10px;                  /* Spacing between buttons */
+    background-color: #2a3b8a;     /* NASA blue background */
+    color: white;                  /* White text */
+    text-align: center;            /* Center the text horizontally */
+    line-height: 200px;            /* Center the text vertically */
+    font-size: 1.5rem;             /* Make the text larger */
+    font-family: Arial, sans-serif;  /* Change the font to Arial */
+    text-decoration: none;         /* Remove underline from the link */
+    border-radius: 10px;           /* Rounded corners for the panel */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+    cursor: pointer;
+}
 
 .experiment-btn:hover {
     background-color: #1f2c6e;  /* Darken the button on hover */
@@ -115,4 +132,73 @@ button:focus {
 
 .experiment-btn:focus {
     outline: none;  /* Remove default focus outline */
+}
+
+
+.nav{
+    margin:0;
+    color: #000000;
+    width: 100vw;
+    height: 20%;
+    position: relative;
+}
+  
+.nav ul{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    text-decoration: none;
+}
+  
+.nav li{
+    display: inline;
+    float: left;
+    background-color: #ffffff;
+    color: white;
+    display: block;
+    padding: 12px;
+} 
+
+.center_object {
+        margin: auto;
+        width: 50%;
+        padding: 10px;
+
+}
+
+.app-bar {
+    display: flex;
+    justify-content: space-between;  /* Spread items to both ends */
+    align-items: center;             /* Vertically center items */
+    width: 100vw;                    /* Full width of the viewport */
+    padding: 10px 20px;              /* Add padding for spacing */
+    background-color: #ffffff;          /* Background color for the app bar */
+    color: #000000;                    /* Text color */
+}
+
+.left-side {
+    display: flex;
+    align-items: center;             /* Align logo and title vertically */
+}
+
+.logo {
+    height: 60px;                    /* Adjust logo size */
+    margin-right: 15px;              /* Space between logo and title */
+}
+
+.title {
+    font-size: 20px;                 /* Title font size */
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: 400;
+}
+
+.home-link {
+    font-size: 18px;                 /* Font size for Home link */
+    color: white;                    /* White text for Home link */
+    text-decoration: none;           /* Remove underline */
+}
+
+.home-link:hover {
+    text-decoration: underline;      /* Underline on hover */
 }
