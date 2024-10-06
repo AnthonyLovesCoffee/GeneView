@@ -16,9 +16,8 @@
 
     <!-- Dash Visualization embedded as an iframe -->
     <div id="dash-visualization">
-        <iframe src="/dash/" width="100%" height="600px" frameborder="0"></iframe>
+        <iframe src="/dash/{{ experiment_name }}" width="100%" height="600px" frameborder="0"></iframe>
     </div>
-
 
     <a href="{{ url_for('landing_page') }}">Back to Landing Page</a>
 </body>
