@@ -163,7 +163,7 @@ def experiment_detail(name):
 
     # Select template based on experiment name
     if name == 'OSD-379':
-        template_name = 'details.html'
+        template_name = 'OSD-379_details.html'
     elif name == 'OSD-665':
         template_name = 'OSD-665_details.html'
     else:
