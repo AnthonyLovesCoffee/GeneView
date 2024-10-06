@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NASA VISUALISER</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="styleguide.css" />
+
 </head>
 <body>
-    <h1>NASA VISUALISER</h1>
+    <h1 class="center">NASA VISUALISER</h1>
 
     <!-- Search Box -->
     <form method="POST" action="/">
@@ -23,3 +27,6 @@
 
 </body>
 </html>
+
+
+
